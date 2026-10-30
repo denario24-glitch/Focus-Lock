@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="FOCUS LOCK — build focus, create better habits, master your time.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>FOCUS LOCK</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101114;--panel:#1b1c21;--line:#35363d;--muted:#a1a1aa;--white:#f4f4f5;--silver:#d4d4d8}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
+    button,input{font:inherit}button{cursor:pointer}.wrap{max-width:980px;margin:auto;padding:22px 18px 48px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px}.brand{font-size:14px;font-weight:900;letter-spacing:.25em}.pill{font-size:11px;color:var(--silver);border:1px solid var(--line);padding:8px 12px;border-radius:999px}
+    .hero{padding:20px 0 34px;max-width:620px}.eyebrow{font-size:11px;letter-spacing:.28em;color:var(--silver);font-weight:700}.hero h1{font-size:clamp(38px,8vw,66px);line-height:1.02;letter-spacing:-.055em;margin:16px 0}.hero p,.muted{color:var(--muted);line-height:1.65}.btn{border:0;border-radius:12px;padding:14px 18px;font-weight:800;background:#e5e5e5;color:#111114}.btn.secondary{background:#26272d;color:#f4f4f5;border:1px solid var(--line)}.btn.full{width:100%}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px}.stat-label{font-size:11px;color:var(--muted);letter-spacing:.08em}.stat{font-size:27px;font-weight:800;margin-top:7px}.section-title{font-size:14px;font-weight:800;letter-spacing:.08em;margin:26px 0 12px}.timer{text-align:center;padding:22px}.clock{font-size:clamp(52px,12vw,76px);font-weight:800;letter-spacing:-.06em;font-variant-numeric:tabular-nums;margin:12px 0}.row{display:flex;gap:9px;align-items:center}.row>*{flex:1}.presets{display:flex;gap:8px;justify-content:center;margin:12px 0 18px}.presets button,.mode,.goal{background:#25262c;color:#eee;border:1px solid var(--line);border-radius:11px;padding:11px}
+    .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.mode{font-size:12px;line-height:1.6}.mode.selected{border-color:#eee;background:#37383f}.goal-list{display:grid;gap:9px}.goal{display:flex;align-items:center;gap:10px;text-align:left}.goal input{accent-color:#eee;width:17px;height:17px}.goal.done span{text-decoration:line-through;color:var(--muted)}
+    input[type=text]{width:100%;background:#222329;color:white;border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+    .hidden{display:none!important}.foot{font-size:11px;color:var(--muted);text-align:center;margin-top:26px}
+    @media(min-width:700px){.dashboard-grid{grid-template-columns:1fr 1.35fr}.hero{padding-top:42px}.grid.stats{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header><div class="brand">FOCUS <span style="color:#a1a1aa">LOCK</span></div><div class="pill" id="status">GUEST MODE</div></header>
+  <main id="welcome">
+    <section class="hero">
+      <div class="eyebrow">YOUR TIME. YOUR CONTROL.</div>
+      <h1>Become the person who gets it done.</h1>
+      <p>Build focus. Create better habits. Make every minute count. Start immediately — no account required.</p>
+      <button class="btn" id="start">START AS GUEST →</button>
+    </section>
+    <div class="grid">
+      <div class="panel"><div class="stat-label">FOCUS TIMER</div><div class="stat">Your pace</div><div class="muted">Choose a session that works for you.</div></div>
+      <div class="panel"><div class="stat-label">BUILT FOR EVERYONE</div><div class="stat">One mission</div><div class="muted">Study, work, trading, fitness and everyday life.</div></div>
+    </div>
+  </main>
+  <main id="app" class="hidden">
+    <div class="row" style="justify-content:space-between;margin-bottom:16px"><div><div class="stat-label">YOUR SPACE</div><h2 style="margin:5px 0 0;font-size:28px">Stay locked in.</h2></div><div class="pill">GUEST</div></div>
+    <div class="grid stats">
+      <div class="panel"><div class="stat-label">FOCUS TODAY</div><div class="stat" id="today">0 min</div></div>
+      <div class="panel"><div class="stat-label">SESSIONS TODAY</div><div class="stat" id="sessions">0</div></div>
+    </div>
+    <div class="dashboard-grid grid" style="margin-top:12px">
+      <section class="panel timer">
+        <div class="stat-label">FOCUS TIMER</div><div class="stat-label" id="modeLabel" style="margin-top:9px">DEEP WORK</div>
+        <div class="clock" id="clock">25:00</div>
+        <div class="presets"><button data-min="25">25m</button><button data-min="50">50m</button><button data-min="90">90m</button></div>
+        <div class="row"><button class="btn full" id="toggle">START SESSION</button><button class="btn secondary" id="reset">RESET</button></div>
+        <p class="muted" style="font-size:11px">Web focus timer. It does not block other apps.</p>
+      </section>
+      <section>
+        <div class="section-title">CHOOSE YOUR FOCUS</div>
+        <div class="modes" id="modes">
+          <button class="mode selected" data-mode="Deep Work">◈<br>Deep Work</button><button class="mode" data-mode="Study">▤<br>Study</button><button class="mode" data-mode="Trading">↗<br>Trading</button><button class="mode" data-mode="Fitness">✦<br>Fitness</button><button class="mode" data-mode="Personal">◎<br>Personal</button><button class="mode" data-mode="Sleep">☾<br>Sleep</button>
+        </div>
+        <div class="section-title">DAILY GOALS</div>
+        <div class="row"><input id="goalInput" type="text" placeholder="Add a goal…"><button class="btn secondary" id="addGoal">ADD</button></div>
+        <div class="goal-list" id="goals" style="margin-top:10px"></div>
+      </section>
+    </div>
+    <div class="row" style="margin-top:20px"><button class="btn secondary" id="install" hidden>INSTALL FOCUS LOCK</button><button class="btn secondary" id="exit">BACK TO WELCOME</button></div>
+  </main>
+  <div class="foot">FOCUS LOCK • CONTROL YOUR TIME. MASTER YOURSELF.</div>
+</div>
+<script>
+(() => {
+ const $=id=>document.getElementById(id);
+ let duration=25,remaining=1500,active=false,interval=null,mode='Deep Work',deferredInstall=null;
+ let state={started:false,goals:[],sessions:[]};
+ try{state={...state,...JSON.parse(localStorage.getItem('focus-lock-web-v06')||'{}')}}catch(e){}
+ function save(){localStorage.setItem('focus-lock-web-v06',JSON.stringify(state))}
+ function todaySessions(){const d=new Date().toDateString();return state.sessions.filter(s=>new Date(s.at).toDateString()===d)}
+ function render(){
+  $('welcome').classList.toggle('hidden',state.started);$('app').classList.toggle('hidden',!state.started);
+  const today=todaySessions();$('today').textContent=today.reduce((n,s)=>n+s.minutes,0)+' min';$('sessions').textContent=today.length;
+  $('clock').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0');
+  $('modeLabel').textContent=mode.toUpperCase();
+  $('goals').replaceChildren();
+  state.goals.forEach((g,i)=>{const label=document.createElement('label');label.className='goal'+(g.done?' done':'');const cb=document.createElement('input');cb.type='checkbox';cb.checked=g.done;cb.addEventListener('change',()=>{state.goals[i].done=cb.checked;save();render()});const span=document.createElement('span');span.textContent=g.title;label.append(cb,span);$('goals').append(label)});
+  document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('selected',b.dataset.mode===mode));
+  $('toggle').textContent=active?'PAUSE SESSION':'START SESSION';
+ }
+ function stop(){active=false;clearInterval(interval);interval=null;render()}
+ function finish(){stop();state.sessions.unshift({minutes:duration,mode,at:new Date().toISOString()});save();remaining=duration*60;render();alert('Session complete. Great work!')}
+ function start(){if(active){stop();return}active=true;render();interval=setInterval(()=>{remaining--;if(remaining<=0){finish();return}render()},1000)}
+ $('start').addEventListener('click',()=>{state.started=true;save();render()});
+ $('exit').addEventListener('click',()=>{stop();state.started=false;save();render()});
+ document.querySelectorAll('[data-min]').forEach(b=>b.addEventListener('click',()=>{stop();duration=Number(b.dataset.min);remaining=duration*60;render()}));
+ document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;render()}));
+ $('toggle').addEventListener('click',start);$('reset').addEventListener('click',()=>{stop();remaining=duration*60;render()});
+ $('addGoal').addEventListener('click',()=>{const title=$('goalInput').value.trim();if(!title)return;state.goals.unshift({title,done:false});$('goalInput').value='';save();render()});
+ $('goalInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('addGoal').click()});
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('install').hidden=false});
+ $('install').addEventListener('click',async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$('install').hidden=true});
+ if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+ if(state.started)render();
+})();
+</script>
+</body>
+</html>
